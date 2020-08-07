@@ -18,6 +18,9 @@ spec:
       - name: simple-todos
         image: darksinge/simple-todos
         imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          value: "redis-svc"
         ports:
         - containerPort: 8080
 ---
