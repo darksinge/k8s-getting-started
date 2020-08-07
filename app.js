@@ -1,22 +1,28 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const fetch = require('node-fetch')
+const redis = require('async-redis')
+const { cache } = require('./middleware')
+
+const client = redis.createClient({
+  host: process.env.REDIS_HOST || 'localhost'
+})
 
 const app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(cache(client))
 
 app.get('/', (req, res) => {
   res.sendFile('./index.html')
 })
 
-app.get('/todos/:id', (req, res) => {
-  fetch(`https://jsonplaceholder.typicode.com/todos/${req.params.id}`)
-    .then(response => response.json())
-    .then(json => {
-      return res.json(json)
-    })
+app.get('/todos/:id', async (req, res) => {
+  const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${req.params.id}`)
+  const todo = await response.json()
+  await client.set(req.originalUrl, JSON.stringify(todo))
+  return res.json(todo)
 })
 
 app.listen(8080, () => {
