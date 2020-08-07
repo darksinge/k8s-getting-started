@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 app.get('/todos/:id', async (req, res) => {
   const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${req.params.id}`)
   const todo = await response.json()
-  await client.set(req.originalUrl, JSON.stringify(todo))
+  await client.setex(req.originalUrl, 60, JSON.stringify(todo))
   return res.json(todo)
 })
 
