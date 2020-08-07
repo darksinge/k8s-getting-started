@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todos-api
+  name: simple-todos
   labels:
-    app: todos-api
+    app: simple-todos
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todos-api
+      app: simple-todos
   template:
     metadata:
       labels:
-        app: todos-api
+        app: simple-todos
     spec:
       containers:
-      - name: todos-api
+      - name: simple-todos
         image: darksinge/simple-todos
         imagePullPolicy: Always
         ports:
