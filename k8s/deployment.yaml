@@ -21,9 +21,6 @@ spec:
         env:
         - name: REDIS_HOST
           value: "redis-svc"
-        envFrom:
-          - secretRef:
-              name: simple-todos-secret
         ports:
         - containerPort: 8080
 ---
