@@ -26,6 +26,19 @@ app.get('/todos/:id', async (req, res) => {
   return res.json(todo)
 })
 
+app.get('/secret', async (req, res) => {
+  const code = req.query.code
+  if (code === process.env.MY_CODE) {
+    return res.json({
+      answer: 42
+    })
+  }
+
+  return res.status(401).json({
+    message: 'Go away!'
+  })
+})
+
 app.listen(8080, () => {
   console.log('Server listening at localhost:8080')
 })
