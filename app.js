@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const fetch = require('node-fetch')
+const path = require('path')
 const redis = require('async-redis')
 const { cache } = require('./middleware')
 
@@ -15,7 +16,7 @@ app.use(bodyParser.json())
 app.use(cache(client))
 
 app.get('/', (req, res) => {
-  res.sendFile('./index.html')
+  res.sendFile(path.join(__dirname, 'index.html'))
 })
 
 app.get('/todos/:id', async (req, res) => {
